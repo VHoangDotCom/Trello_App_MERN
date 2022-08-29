@@ -44,8 +44,20 @@ body {
   }
 
   .btn:focus, .btn:active{
-    outline: none;
-    box-shadow: none;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .viethoang-content-editable{
+    background-color: inherit;
+    border: none;
+    font-size: inherit;
+    font-weight: inherit;
+    cursor: $cursor-pointer-special;
+    &:focus {
+      background-color: white;
+      border: 1px solid $input-border-color;
+    }
   }
 }
 
