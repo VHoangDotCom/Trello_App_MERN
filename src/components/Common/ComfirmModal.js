@@ -31,5 +31,4 @@ function ConfirmModal(props) {
     </>
   )
 }
-
 export default ConfirmModal
