@@ -9,6 +9,8 @@ import { initialData } from 'actions/initialData'
 
 import { mapOrder } from 'utilities/sorts'
 
+import { applyDrag } from 'utilities/dragDrop'
+
 import { Container, Draggable } from 'react-smooth-dnd'
 
 export const BoardContent = () => {
@@ -31,6 +33,27 @@ export const BoardContent = () => {
 
   const onColumnDrop = (dropResult) => {
     // console.log(dropResult)
+    let newColumns = [...columns]
+    newColumns = applyDrag(newColumns, dropResult)
+
+    let newBoard = { ...board }
+    newBoard.columnOrder = newColumns.map(c => c.id)
+    newBoard.columns = newColumns
+
+    setColumns(newColumns)
+    setBoard(newBoard)
+  }
+
+  const onCardDrop = (columnId, dropResult) => {
+    if (dropResult.removeIndex !== null || dropResult.addedIndex !== null) {
+      let newColumns = [...columns]
+
+      let currentColumn = newColumns.find(c => c.id === columnId)
+      currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
+      currentColumn.cardOrder = currentColumn.cards.map(i => i.id)
+
+      setColumns(newColumns)
+    }
   }
 
   return (
@@ -48,10 +71,13 @@ export const BoardContent = () => {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} />
+            <Column column={column} onCardDrop={onCardDrop} />
           </Draggable>
         ))}
       </Container>
+      <div className='add-new-column'>
+        <i className='fa fa-plus icon' />  Add another columns
+      </div>
     </div>
   )
 }
