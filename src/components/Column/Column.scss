@@ -1,7 +1,6 @@
 @import '_setting.scss';
 
 
-$list-bg-color:#ebecf0;
 $column-height: calc(#{$board-content-height} - #{$gap * 2});
 
 .column{
@@ -34,7 +33,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
       border-bottom-right-radius: $column-border-radius;
       color: #888;
       .footer-action {
-        margin-left: $gap;
+        margin-left: 5px;
         cursor: $cursor-pointer-special;
         &:hover{
           color: $app-main-text-color;
