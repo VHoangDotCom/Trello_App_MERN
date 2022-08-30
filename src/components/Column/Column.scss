@@ -69,6 +69,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
     footer{
       padding-left: 10px;
       height: $column-footer-height;
+      min-height: $gap;
       line-height: $column-footer-height;
       font-weight: bold;
       border-bottom-left-radius: $column-border-radius;
@@ -117,6 +118,12 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
         margin: 5px;
       }
 
+      .add-new-card-area{
+        .textarea-enter-new-card{
+          min-height: 54px;
+          max-height: 162px;
+        }
+      }
      
     }
   }
