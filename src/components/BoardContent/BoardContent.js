@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { isEmpty } from 'lodash'
 
 import './BoardContent.scss'
@@ -20,11 +20,12 @@ export const BoardContent = () => {
   const [board, setBoard] = useState({})
   const [columns, setColumns] = useState({})
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
+  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const newColumnInputRef = useRef(null)
 
   const [newColumnTitle, setNewColumnTitle] = useState('')
-  const onNewColumnTitleChange = useCallback((e) => setNewColumnTitle(e.target.value), [])
+  const onNewColumnTitleChange = (e) => setNewColumnTitle(e.target.value)
 
 
   useEffect( () => {
@@ -72,8 +73,6 @@ export const BoardContent = () => {
       setColumns(newColumns)
     }
   }
-
-  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const addNewColumn = () => {
     if (!newColumnTitle) {
@@ -137,7 +136,11 @@ export const BoardContent = () => {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} onCardDrop={onCardDrop} onUpdateColumn={onUpdateColumn} />
+            <Column
+              column={column}
+              onCardDrop={onCardDrop}
+              onUpdateColumn={onUpdateColumn}
+            />
           </Draggable>
         ))}
       </Container>
@@ -165,7 +168,7 @@ export const BoardContent = () => {
                 onKeyDown={event => (event.key === 'Enter') && addNewColumn()}
               />
               <Button variant="success" size='sm' onClick={addNewColumn}>Add Column</Button>
-              <span className='cancel-new-column' onClick={toggleOpenNewColumnForm}>
+              <span className='cancel-icon' onClick={toggleOpenNewColumnForm}>
                 <i className='fa fa-times icon' />
               </span>
             </Col>
