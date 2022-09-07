@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState,useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { isEmpty } from 'lodash'
 
 import './BoardContent.scss'
@@ -6,7 +6,7 @@ import './BoardContent.scss'
 import { Column } from 'components/Column/Column'
 
 //import { initialData } from 'actions/initialData'
-import { fetchBoardDetails } from 'actions/ApiCall'
+import { fetchBoardDetails, createNewColumn } from 'actions/ApiCall'
 
 import { mapOrder } from 'utilities/sorts'
 import { applyDrag } from 'utilities/dragDrop'
@@ -80,27 +80,27 @@ export const BoardContent = () => {
     }
 
     const newColumnToAdd = {
-      id: Math.random().toString(36).substring(2, 5), //5 random charactors
       boardId: board._id,
-      title: newColumnTitle.trim(),
-      cardOrder: [],
-      cards: []
+      title: newColumnTitle.trim()
     }
 
-    let newColumns = [...columns]
-    newColumns.push(newColumnToAdd)
+    createNewColumn(newColumnToAdd).then(column => {
+      let newColumns = [...columns]
+      newColumns.push(column)
 
-    let newBoard = { ...board }
-    newBoard.columnOrder = newColumns.map(c => c._id)
-    newBoard.columns = newColumns
+      let newBoard = { ...board }
+      newBoard.columnOrder = newColumns.map(c => c._id)
+      newBoard.columns = newColumns
 
-    setColumns(newColumns)
-    setBoard(newBoard)
-    setNewColumnTitle('')
-    toggleOpenNewColumnForm()
+      setColumns(newColumns)
+      setBoard(newBoard)
+      setNewColumnTitle('')
+      toggleOpenNewColumnForm()
+    })
+
   }
 
-  const onUpdateColumn = (newColumnToUpdate) => {
+  const onUpdateColumnState = (newColumnToUpdate) => {
     const columnIdToUpdate = newColumnToUpdate._id
 
     let newColumns = [...columns]
@@ -138,7 +138,7 @@ export const BoardContent = () => {
             <Column
               column={column}
               onCardDrop={onCardDrop}
-              onUpdateColumn={onUpdateColumn}
+              onUpdateColumnState={onUpdateColumnState}
             />
           </Draggable>
         ))}
