@@ -10,7 +10,8 @@ import {
   fetchBoardDetails,
   createNewColumn,
   updateBoard,
-  updateColumn
+  updateColumn,
+  updateCard
 } from 'actions/ApiCall'
 
 import { mapOrder } from 'utilities/sorts'
@@ -81,15 +82,18 @@ export const BoardContent = () => {
       currentColumn.cardOrder = currentColumn.cards.map(i => i._id)
 
       setColumns(newColumns)
-      if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+      if (dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
         //Actions : Move card inside its column
         updateColumn(currentColumn._id, currentColumn).catch(() => setColumns(columns))
       } else {
         //Actions : Move card between 2 columns
-        //updateColumn(currentColumn._id, currentColumn).catch(() => setColumns(columns))
-
-        let currentCard = cloneDeep(dropResult.payload)
-        currentCard.columnId = currentColumn._id
+        updateColumn(currentColumn._id, currentColumn).catch(() => setColumns(columns))
+        if (dropResult.addedIndex !== null) {
+          let currentCard = cloneDeep(dropResult.payload)
+          currentCard.columnId = currentColumn._id
+          //call api to update column id
+          updateCard(currentCard._id, currentCard)
+        }
       }
 
     }
